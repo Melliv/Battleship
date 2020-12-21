@@ -1,0 +1,40 @@
+@page
+@model WebApp.Pages.NewGame
+
+@{
+    ViewData["Title"] = "New game";
+}
+
+<div asp-validation-summary="All" class="text-center"></div>
+
+<form method="post">
+
+    <div class="text-center">
+        <label for="GameName">Game name:</label>
+        <input type="text" id="GameName" name="GameName"><br>
+        <label for="Player1Name">Player 1 name:</label>
+        <input type="text" id="Player1Name" name="Player1Name" value="Player1"><br>
+        <label for="Player2Name">Player 2 name:</label>
+        <input type="text" id="Player2Name" name="Player2Name" value="Computer"><br>
+    </div>
+
+    <div class="text-center">
+        <h3>Table size</h3>
+        <label for="X">X:</label>
+        <input type="text" id="X" name="X" value="10" size="3">
+        <label for="Y">Y:</label>
+        <input type="text" id="Y" name="Y" value="10" size="3"><br>
+        
+    </div>
+
+    <div class="text-center">
+        <h3>Ship positioning</h3>
+        <label for="AutomatedShipsPos">Automated ship positioning:</label>
+        <input type="checkbox" id="AutomatedShipsPos" name="AutomatedShipsPos" value="true">
+    </div>
+
+    <div class="text-center">
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </div>
+    
+</form>

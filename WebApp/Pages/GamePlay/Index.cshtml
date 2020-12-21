@@ -1,0 +1,81 @@
+﻿@page
+@using GameBrain.Enums
+@model WebApp.Pages.GamePlay.Index
+
+@{
+    ViewData["Title"] = "Battleship";
+}
+<div asp-validation-summary="All"></div>
+
+<div class="text-center" style="color: #fd7e14">
+    @if (@Model.TableState != null)
+    {
+        <h2>Player action: ' @Model.TableState '</h2>
+    }
+    
+    @if (@Model.Winner == null)
+    {
+        <h2>Player ' @Model.PlayerTurnName ' turn</h2>
+    }
+    else
+    {
+        <h2>Winner: @Model.Winner</h2>
+    }
+</div>
+
+<table class="table">
+    <tr>
+        @for (int tableIndex = 0; tableIndex < 2; tableIndex++)
+        {
+            <td>
+                <table class="game-board">
+                    <h3>@Model.Battleship.GetTable(tableIndex).GetTableData().PlayerName</h3>
+                    @for (int y = 0; y < Model.Battleship.GetGameData().Length; y++)
+                    {
+                        <tr>
+                            @for (int x = 0; x < Model.Battleship.GetGameData().Width; x++)
+                            {
+                                <td class="cell">
+                                    @switch (Model.Battleship.GetTable(tableIndex).GetCell(x, y))
+                                    {
+                                        case ECellState.Ship:
+                                            @if (Model.Battleship.GetTable(tableIndex).GetTableData().BlindTable)
+                                            {
+                                                <a class="cellNotVisible" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="ship" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            }
+                                            break;
+                                        case ECellState.Empty:
+                                            if (Model.Battleship.GetTable(tableIndex).GetTableData().BlindTable)
+                                            {
+                                                <a class="cellNotVisible" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="water" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            }
+                                            break;
+                                        case ECellState.Bomb:
+                                            <a class="shotWater" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            break;
+                                        case ECellState.ShipAndBomb:
+                                            <a class="shotShip" href="?id=@Model.Game.GameId&tableIndex=@tableIndex&x=@x&y=@y"> </a>
+                                            break;
+                                    }
+
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </td>
+        }
+    </tr>
+</table>
+
+<div class="text-center">
+    <a asp-route-id="@Model.Game.GameId" asp-route-stepBack="true" class="btn btn-primary">Take step back</a>
+</div>

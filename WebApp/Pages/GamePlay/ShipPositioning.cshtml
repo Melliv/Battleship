@@ -1,0 +1,91 @@
+﻿@page
+@using Domain
+@using GameBrain.Enums
+@model WebApp.Pages.GamePlay.ShipPositioning
+
+@{
+    ViewData["Title"] = "Battleship";
+}
+<div asp-validation-summary="All"></div>
+
+<div class="text-center" style="color: #fd7e14">
+    <H1>Ship positioning</H1>
+</div>
+
+<table class="table">
+    <tr>
+        @for (int tableIndex = 0; tableIndex < 2; tableIndex++)
+        {
+            <th>
+                <h3>@Model.Battleship.GetTable(tableIndex).GetTableData().PlayerName</h3>
+                <table class="game-board">
+                    @for (int y = 0; y < @Model.Battleship.GetGameData().Length; y++)
+                    {
+                        <tr>
+                            @for (int x = 0; x < @Model.Battleship.GetGameData().Width; x++)
+                            {
+                                <td class="cell">
+                                    @switch (@Model.Battleship.GetTable(tableIndex).GetCell(x, y))
+                                    {
+                                        case ECellState.Ship:
+                                            @if (@Model.Battleship.GetTable(tableIndex).GetTableData().BlindTable)
+                                            {
+                                                <a class="cellNotVisible"> </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="ship"> </a>
+                                            }
+                                            break;
+                                        case ECellState.Empty:
+                                            if (@Model.Battleship.GetTable(tableIndex).GetTableData().BlindTable)
+                                            {
+                                                <a class="cellNotVisible"> </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="water"> </a>
+                                            }
+                                            break;
+                                        case ECellState.Bomb:
+                                            <a class="shotWater"> </a>
+                                            break;
+                                        case ECellState.ShipAndBomb:
+                                            <a class="shotShip"> </a>
+                                            break;
+                                    }
+
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </th>
+        }
+    </tr>
+</table>
+
+<div>
+    
+    <table class="text-center">
+        <tr>
+            <td class="move-ship"></td>
+            <td class="move-ship"><a asp-route-id="@Model.Game.GameId" asp-route-dir="up" class="emoji"><span class="emoji">⬆️</span></a></td>
+            <td class="move-ship"></td>
+        </tr>
+        <tr>
+            <td class="move-ship"><a asp-route-id="@Model.Game.GameId" asp-route-dir="left" class="emoji"><span class="emoji">⬅️</span></a></td>
+            <td class="move-ship"><a asp-route-id="@Model.Game.GameId" asp-route-dir="rotate" class="emoji"><span class="emoji">🔄</span></a></td>
+            <td class="move-ship"><a asp-route-id="@Model.Game.GameId" asp-route-dir="right" class="emoji"><span class="emoji">➡️</span></a></td>
+            
+            <td><a asp-route-id="@Model.Game.GameId" asp-route-placeShip="true" class="btn btn-primary">Place the ship</a></td>
+        </tr>
+        <tr>
+            <td class="move-ship"></td>
+            <td class="move-ship"><a asp-route-id="@Model.Game.GameId" asp-route-dir="down" class="emoji"><span class="emoji">⬇️</span></a></td>
+            <td class="move-ship"></td>
+        </tr>
+    </table>
+
+</div>
+

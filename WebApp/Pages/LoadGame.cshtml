@@ -1,0 +1,43 @@
+﻿@page
+@using Domain
+@model WebApp.Pages.LoadGame
+
+@{
+    ViewData["Title"] = "Load game";
+}
+
+
+<table class="text-center">
+    <tr>
+        <th>
+            <h2>Game name</h2>
+        </th>
+        <th>
+            <h2>Date</h2>
+        </th>
+        <th>
+            <h2>Table Size</h2>
+        </th>
+        <th>
+        </th>
+    </tr>
+    @foreach (Game game in @Model.Games)
+    {
+        <tr>
+            <td>
+                <h3>@game.GameName</h3>
+            </td>
+            <td>
+                <h3>@game.Date</h3>
+            </td>
+            <td>
+                <h3>@game.Width  x  @game.Length</h3>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-route-id=@game.GameId >Load</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
