@@ -1,0 +1,134 @@
+@page
+@model WebApp.Pages_Cars.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Search Engine</h2>
+
+<form class="form-inline" method="get">
+    <table>
+        <tr>
+            <td><label class="my-1 mr-2">Number plate</label></td>
+            <td><input asp-for="NumberPlate" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Mark</label></td>
+            <td><input asp-for="Mark" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Model</label></td>
+            <td><input asp-for="Model" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Minimum release year</label></td>
+            <td><input asp-for="ReleaseYear" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Gearbox</label></td>
+            <td><input asp-for="Gearbox" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Fuel type</label></td>
+            <td><input asp-for="FuelType" class="form-control mb-2 mr-sm-2"/></td>
+        </tr>
+        <tr>
+            <td><label class="my-1 mr-2">Car type</label></td>
+            <td><select asp-for="CarTypeId" class="form-control mb-2 mr-sm-2" asp-items="@Model.CarTypes"></select></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align: left">
+                <input asp-for="Btn" type="submit" value="Search" class="btn btn-primary mb-2 my-1 mx-2"/>
+                @if (@Model.Btn == "Reset")
+                {
+                    <input asp-for="Btn" type="submit" value="Reset" class="btn btn-primary mb-2 my-1"/>
+
+                }
+            </td>
+        </tr>
+    </table>
+
+</form>
+
+
+<p>
+    <a asp-page="Create"><h3>Add new car</h3></a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Car![0].NumberPlate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Car![0].Mark)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Car![0].Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Car![0].MarketPrice)
+        </th>
+        <th>
+            Expenses Price
+        </th>
+        <th>
+            Expenses
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Car!) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberPlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketPrice)
+            </td>
+            <td>
+                @{ var sum = item.Expenses != null ? item.Expenses!.Sum(e => e.Price) : 0;}
+                @Html.DisplayFor(modelItem => sum)
+            </td>
+            <td>
+            <table class="table table-sm">
+                @if (item.Expenses != null)
+                {
+                    foreach (var expense in item.Expenses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => expense.Description)
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            </td>
+
+            <td>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td><a asp-page="./Edit" asp-route-id="@item.CarId">Edit</a></td>
+                    </tr>
+                    <tr>
+                        <td><a asp-page="./Details" asp-route-id="@item.CarId">Details</a></td> 
+                    </tr>
+                    <tr>
+                        <td><a asp-page="./Delete" asp-route-id="@item.CarId">Delete</a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
